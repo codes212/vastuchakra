@@ -81,13 +81,13 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
       </div>
 
       <Tabs defaultValue="overview" className="flex-1 flex flex-col min-h-0">
-        <TabsList className="mx-4 mt-3 flex-shrink-0 w-[calc(100%-2rem)] overflow-x-auto whitespace-nowrap justify-start">
-          <TabsTrigger className="shrink-0" value="overview">Overview</TabsTrigger>
-          <TabsTrigger className="shrink-0" value="doavoid">Do / Avoid</TabsTrigger>
-          <TabsTrigger className="shrink-0" value="objects">Objects</TabsTrigger>
-          {elementInfo && <TabsTrigger className="shrink-0" value="colors">Colors</TabsTrigger>}
-          {elementInfo && <TabsTrigger className="shrink-0" value="metals">Metals</TabsTrigger>}
-          {hasEntrance && <TabsTrigger className="shrink-0" value="entrance">Entrance</TabsTrigger>}
+        <TabsList className="mx-4 mt-3 flex-shrink-0">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="doavoid">Do / Avoid</TabsTrigger>
+          <TabsTrigger value="objects">Objects</TabsTrigger>
+          {elementInfo && <TabsTrigger value="colors">Colors</TabsTrigger>}
+          {elementInfo && <TabsTrigger value="metals">Metals</TabsTrigger>}
+          {hasEntrance && <TabsTrigger value="entrance">Entrance</TabsTrigger>}
         </TabsList>
 
         <div className="flex-1 overflow-y-auto p-4">
@@ -113,13 +113,13 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
                   <div>
                     <p className="text-xs font-medium mb-1">Benefic Colors</p>
                     <div className="flex flex-wrap gap-2">
-                      {elementInfo.beneficColors.map(color => <ColorChip key={`overview-benefic-${color}`} name={color} />)}
+                      {elementInfo.beneficColors.map(color => <Badge key={color} variant="secondary">{color}</Badge>)}
                     </div>
                   </div>
                   <div>
                     <p className="text-xs font-medium mb-1">Malefic Colors</p>
                     <div className="flex flex-wrap gap-2">
-                      {elementInfo.maleficColors.map(color => <ColorChip key={`overview-malefic-${color}`} name={color} />)}
+                      {elementInfo.maleficColors.map(color => <Badge key={color} variant="outline">{color}</Badge>)}
                     </div>
                   </div>
                   <div>
