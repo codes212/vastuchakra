@@ -26,6 +26,21 @@ const verdictIcon = (v: string) => {
   return '⚪';
 };
 
+
+const COLOR_HEX: Record<string, string> = {
+  Yellow: '#facc15', Beige: '#f5f5dc', Cream: '#fffdd0', Green: '#22c55e', Brown: '#8b5a2b',
+  Blue: '#3b82f6', Black: '#111827', Red: '#ef4444', Purple: '#a855f7', Violet: '#8b5cf6',
+  Orange: '#f97316', Pink: '#ec4899', White: '#f8fafc', Grey: '#9ca3af', Silver: '#c0c0c0',
+  Gold: '#d4af37', Golden: '#d4af37', Wooden: '#966f33', Metallic: '#9ca3af', 'Metallic Colors': '#9ca3af',
+};
+
+const ColorChip = ({ name }: { name: string }) => (
+  <div className="inline-flex items-center gap-2 rounded-md border border-border px-2 py-1 text-xs bg-background">
+    <span className="h-4 w-4 rounded-sm border border-border" style={{ backgroundColor: COLOR_HEX[name] || '#94a3b8' }} />
+    <span>{name}</span>
+  </div>
+);
+
 export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
   const zone = ZONES[zoneName];
   const elementInfo = zone ? ELEMENT_DETAILS[zone.element] : undefined;
@@ -70,6 +85,8 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="doavoid">Do / Avoid</TabsTrigger>
           <TabsTrigger value="objects">Objects</TabsTrigger>
+          {elementInfo && <TabsTrigger value="colors">Colors</TabsTrigger>}
+          {elementInfo && <TabsTrigger value="metals">Metals</TabsTrigger>}
           {hasEntrance && <TabsTrigger value="entrance">Entrance</TabsTrigger>}
         </TabsList>
 
@@ -166,6 +183,44 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
             ))}
             {objects.length === 0 && <p className="text-sm text-muted-foreground">No object data for this zone.</p>}
           </TabsContent>
+
+
+          {elementInfo && (
+            <TabsContent value="colors" className="mt-0 space-y-4">
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Benefic Colors</CardTitle></CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  {elementInfo.beneficColors.map(color => <ColorChip key={`benefic-${color}`} name={color} />)}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Malefic Colors</CardTitle></CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  {elementInfo.maleficColors.map(color => <ColorChip key={`malefic-${color}`} name={color} />)}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {elementInfo && (
+            <TabsContent value="metals" className="mt-0 space-y-4">
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Benefic Metals</CardTitle></CardHeader>
+                <CardContent><p className="text-sm text-muted-foreground">{elementInfo.beneficMetals.join(', ')}</p></CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Malefic Metals</CardTitle></CardHeader>
+                <CardContent><p className="text-sm text-muted-foreground">{elementInfo.maleficMetals.join(', ')}</p></CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Planets & Directions</CardTitle></CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground"><span className="font-medium text-foreground">Planets:</span> {elementInfo.planets.join(', ')}</p>
+                  <p className="text-sm text-muted-foreground"><span className="font-medium text-foreground">Directions:</span> {elementInfo.directions.join(', ')}</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
 
           {hasEntrance && (
             <TabsContent value="entrance" className="mt-0 space-y-4">
