@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { SLICES, SLICE_ANGLE, SLICE_TO_ZONE, ZONES, ZONE_ANGLES } from '@/data/vastuData';
 
-const CX = 300, CY = 300;
-const SLICE_OUTER = 260, SLICE_INNER = 110, LABEL_R = 190, ZONE_R = 80;
+const CX = 350, CY = 350;
+const SLICE_OUTER = 240, SLICE_INNER = 110, LABEL_R = 180;
+const ZONE_OUTER = 310, ZONE_INNER = 245;
 
 function toRad(deg: number) {
   return ((deg - 90) * Math.PI) / 180;
@@ -28,8 +29,54 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
   const selectedZone = selectedSlice ? SLICE_TO_ZONE[selectedSlice] : null;
 
   return (
-    <svg viewBox="0 0 600 600" className="w-full max-w-[540px] mx-auto" role="img" aria-label="Vastu Chakra Wheel">
-      {/* Boundary circles */}
+    <svg viewBox="0 0 700 700" className="w-full max-w-[600px] mx-auto" role="img" aria-label="Vastu Chakra Wheel">
+      {/* Outer zone ring */}
+      <circle cx={CX} cy={CY} r={ZONE_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
+      <circle cx={CX} cy={CY} r={ZONE_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
+
+      {/* Zone segments in outer ring */}
+      {Object.entries(ZONE_ANGLES).map(([zone, angle]) => {
+        const startAngle = angle - SLICE_ANGLE;
+        const endAngle = angle + SLICE_ANGLE;
+        const isSelected = selectedZone === zone;
+
+        // radial lines for zone boundaries
+        const innerPt = polar(startAngle, ZONE_INNER);
+        const outerPt = polar(startAngle, ZONE_OUTER);
+
+        const midAngle = angle;
+        const labelR = (ZONE_INNER + ZONE_OUTER) / 2;
+        const p = polar(midAngle, labelR - 8);
+        const p2 = polar(midAngle, labelR + 10);
+        const isBottom = midAngle > 90 && midAngle < 270;
+        const info = ZONES[zone];
+
+        return (
+          <g key={`zone-${zone}`}>
+            <line x1={innerPt.x} y1={innerPt.y} x2={outerPt.x} y2={outerPt.y}
+              stroke="hsl(var(--border))" strokeWidth="0.5" />
+            <path
+              d={slicePath(startAngle, endAngle, ZONE_INNER, ZONE_OUTER)}
+              fill={isSelected ? 'hsl(var(--primary) / 0.08)' : 'transparent'}
+              className="pointer-events-none"
+            />
+            <text x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central"
+              transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p.x}, ${p.y})`}
+              className="text-[9px] font-bold pointer-events-none select-none"
+              fill={isSelected ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}>
+              {zone}
+            </text>
+            <text x={p2.x} y={p2.y} textAnchor="middle" dominantBaseline="central"
+              transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p2.x}, ${p2.y})`}
+              className="text-[6px] pointer-events-none select-none"
+              fill="hsl(var(--muted-foreground))">
+              {info?.aspects.join(' · ')}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Boundary circles for slices */}
       <circle cx={CX} cy={CY} r={SLICE_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
       <circle cx={CX} cy={CY} r={SLICE_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
 
@@ -49,15 +96,12 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
       {SLICES.map((label, i) => {
         const startAngle = i * SLICE_ANGLE;
         const endAngle = (i + 1) * SLICE_ANGLE;
-        const zone = SLICE_TO_ZONE[label];
         const isSelected = selectedSlice === label;
-        const isZoneSelected = selectedZone === zone;
         const isHovered = hovered === label;
 
         let fill = i % 2 === 0 ? 'hsl(var(--secondary))' : 'hsl(var(--card))';
-        if (isZoneSelected) fill = 'hsl(var(--primary) / 0.12)';
-        if (isSelected) fill = 'hsl(var(--primary) / 0.28)';
-        if (isHovered && !isSelected) fill = 'hsl(var(--primary) / 0.08)';
+        if (isSelected) fill = 'hsl(var(--primary) / 0.3)';
+        else if (isHovered) fill = 'hsl(var(--primary) / 0.1)';
 
         const midAngle = startAngle + SLICE_ANGLE / 2;
         const lp = polar(midAngle, LABEL_R);
@@ -68,12 +112,13 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
             <path
               d={slicePath(startAngle, endAngle, SLICE_INNER, SLICE_OUTER)}
               fill={fill} stroke="hsl(var(--border))" strokeWidth="0.5"
-              className="cursor-pointer transition-all duration-150"
+              className="cursor-pointer transition-colors duration-150 outline-none"
               onClick={() => onSliceClick(label)}
               onMouseEnter={() => setHovered(label)}
               onMouseLeave={() => setHovered(null)}
-              role="button" tabIndex={0} aria-label={`${label} – ${zone}`}
+              role="button" tabIndex={0} aria-label={`${label} – ${SLICE_TO_ZONE[label]}`}
               onKeyDown={(e) => e.key === 'Enter' && onSliceClick(label)}
+              style={{ outline: 'none' }}
             />
             <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${lp.x}, ${lp.y})`}
@@ -85,34 +130,20 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
         );
       })}
 
-      {/* Zone labels in inner ring */}
-      {Object.entries(ZONE_ANGLES).map(([zone, angle]) => {
-        const p = polar(angle, ZONE_R);
-        const isBottom = angle > 90 && angle < 270;
-        const info = ZONES[zone];
-        return (
-          <g key={`z-${zone}`}>
-            <text x={p.x} y={p.y - 5} textAnchor="middle" dominantBaseline="central"
-              transform={`rotate(${isBottom ? angle + 180 : angle}, ${p.x}, ${p.y - 5})`}
-              className="text-[8px] font-bold pointer-events-none select-none"
-              fill={selectedZone === zone ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}>
-              {zone}
-            </text>
-            <text x={p.x} y={p.y + 6} textAnchor="middle" dominantBaseline="central"
-              transform={`rotate(${isBottom ? angle + 180 : angle}, ${p.x}, ${p.y + 6})`}
-              className="text-[5px] pointer-events-none select-none"
-              fill="hsl(var(--muted-foreground))">
-              {info?.aspects.join(' · ')}
-            </text>
-          </g>
-        );
-      })}
+      {/* Center text */}
+      <circle cx={CX} cy={CY} r={SLICE_INNER - 5} fill="hsl(var(--card))" />
+      <text x={CX} y={CY - 10} textAnchor="middle" dominantBaseline="central"
+        className="text-lg font-display font-bold pointer-events-none select-none"
+        fill="hsl(var(--foreground))">Vastu</text>
+      <text x={CX} y={CY + 14} textAnchor="middle" dominantBaseline="central"
+        className="text-lg font-display font-bold pointer-events-none select-none"
+        fill="hsl(var(--foreground))">Chakra</text>
 
       {/* Cardinal labels */}
       {([
         { l: 'N', a: 0 }, { l: 'E', a: 90 }, { l: 'S', a: 180 }, { l: 'W', a: 270 },
       ] as const).map(({ l, a }) => {
-        const p = polar(a, SLICE_OUTER + 18);
+        const p = polar(a, ZONE_OUTER + 18);
         return (
           <text key={l} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central"
             className="text-sm font-bold pointer-events-none" fill="hsl(var(--primary))">
@@ -120,10 +151,6 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
           </text>
         );
       })}
-
-      {/* Center dot */}
-      <circle cx={CX} cy={CY} r={7} fill="hsl(var(--primary))" />
-      <circle cx={CX} cy={CY} r={3} fill="hsl(var(--primary-foreground))" />
     </svg>
   );
 }
