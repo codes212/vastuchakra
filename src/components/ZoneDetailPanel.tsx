@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ZONES, ZONE_SHORT_TO_FULL } from '@/data/vastuData';
+import { ELEMENT_DETAILS, ZONES, ZONE_SHORT_TO_FULL } from '@/data/vastuData';
 import entrancesData from '@/data/entrances.json';
 import objectsVerdictsData from '@/data/objects-verdicts.json';
 import objectsRoomsData from '@/data/objects-rooms.json';
@@ -28,6 +28,7 @@ const verdictIcon = (v: string) => {
 
 export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
   const zone = ZONES[zoneName];
+  const elementInfo = zone ? ELEMENT_DETAILS[zone.element] : undefined;
   const fullName = ZONE_SHORT_TO_FULL[zoneName] || zoneName;
 
   const entrance = (entrancesData as any[]).find(e => e.direction === sliceId);
@@ -88,6 +89,41 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
               <CardHeader className="pb-2"><CardTitle className="text-sm">Element</CardTitle></CardHeader>
               <CardContent><Badge variant="outline">{zone?.element}</Badge></CardContent>
             </Card>
+            {elementInfo && (
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm">Element Guidance</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-xs font-medium mb-1">Benefic Colors</p>
+                    <div className="flex flex-wrap gap-2">
+                      {elementInfo.beneficColors.map(color => <Badge key={color} variant="secondary">{color}</Badge>)}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium mb-1">Malefic Colors</p>
+                    <div className="flex flex-wrap gap-2">
+                      {elementInfo.maleficColors.map(color => <Badge key={color} variant="outline">{color}</Badge>)}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium mb-1">Benefic Metals</p>
+                    <p className="text-sm text-muted-foreground">{elementInfo.beneficMetals.join(', ')}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium mb-1">Malefic Metals</p>
+                    <p className="text-sm text-muted-foreground">{elementInfo.maleficMetals.join(', ')}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium mb-1">Planets</p>
+                    <p className="text-sm text-muted-foreground">{elementInfo.planets.join(', ')}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium mb-1">Directions</p>
+                    <p className="text-sm text-muted-foreground">{elementInfo.directions.join(', ')}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="doavoid" className="mt-0 space-y-4">
