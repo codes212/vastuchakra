@@ -9,6 +9,8 @@ import ZonesPage from "./pages/ZonesPage";
 import EntrancePage from "./pages/EntrancePage";
 import ObjectsPage from "./pages/ObjectsPage";
 import RemediesPage from "./pages/RemediesPage";
+import ColorsPage from "./pages/ColorsPage";
+import MetalsPage from "./pages/MetalsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/entrances" element={<EntrancePage />} />
             <Route path="/objects" element={<ObjectsPage />} />
             <Route path="/remedies" element={<RemediesPage />} />
+            <Route path="/colors" element={<ColorsPage />} />
+            <Route path="/metals" element={<MetalsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>

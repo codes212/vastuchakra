@@ -1,9 +1,45 @@
 import { useState } from 'react';
 import { SLICES, SLICE_ANGLE, SLICE_TO_ZONE, ZONES, ZONE_ANGLES } from '@/data/vastuData';
+import devtasData from '@/data/VastuDevtas.json';
 
 const CX = 350, CY = 350;
 const SLICE_OUTER = 240, SLICE_INNER = 110, LABEL_R = 180;
 const ZONE_OUTER = 310, ZONE_INNER = 245;
+
+const DEVTA_RING_INNER = 118;
+const DEVTA_RING_OUTER = 158;
+const DEVTA_LABEL_R = 170;
+
+const DEVTA_ZONE_COLOR: Record<string, string> = {
+  North: '#22c55e',
+  NNW: '#0ea5e9',
+  NE: '#10b981',
+  ENE: '#14b8a6',
+  East: '#3b82f6',
+  'East (Purva)': '#3b82f6',
+  ESE: '#f97316',
+  SE: '#ef4444',
+  South: '#dc2626',
+  SSW: '#f97316',
+  SW: '#b91c1c',
+  WSW: '#2563eb',
+  West: '#eab308',
+  WNW: '#84cc16',
+  NW: '#06b6d4',
+  Brahmasthan: '#facc15',
+};
+
+interface Devta {
+  no: number;
+  devtaName: string;
+  direction: string;
+  degreeRange: string;
+  zone: string;
+  ozone: string;
+  degree: number;
+}
+
+const DEVTAS = devtasData as Devta[];
 
 function toRad(deg: number) {
   return ((deg - 90) * Math.PI) / 180;
@@ -26,10 +62,17 @@ interface Props {
 
 export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
+  const [hoveredDevta, setHoveredDevta] = useState<Devta | null>(null);
   const selectedZone = selectedSlice ? SLICE_TO_ZONE[selectedSlice] : null;
 
   return (
-    <svg viewBox="0 0 700 700" className="w-full max-w-[600px] mx-auto" role="img" aria-label="Vastu Chakra Wheel">
+    <svg
+      viewBox="0 0 700 700"
+      className="w-full max-w-[600px] mx-auto"
+      role="img"
+      aria-label="Vastu Chakra Wheel"
+      onMouseLeave={() => setHoveredDevta(null)}
+    >
       {/* Outer zone ring */}
       <circle cx={CX} cy={CY} r={ZONE_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
       <circle cx={CX} cy={CY} r={ZONE_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
@@ -40,41 +83,110 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
         const endAngle = angle + SLICE_ANGLE;
         const isSelected = selectedZone === zone;
 
-        // radial lines for zone boundaries
         const innerPt = polar(startAngle, ZONE_INNER);
         const outerPt = polar(startAngle, ZONE_OUTER);
 
-        const midAngle = angle;
         const labelR = (ZONE_INNER + ZONE_OUTER) / 2;
-        const p = polar(midAngle, labelR - 8);
-        const p2 = polar(midAngle, labelR + 10);
-        const isBottom = midAngle > 90 && midAngle < 270;
+        const p = polar(angle, labelR - 8);
+        const p2 = polar(angle, labelR + 10);
+        const isBottom = angle > 90 && angle < 270;
         const info = ZONES[zone];
 
         return (
           <g key={`zone-${zone}`}>
-            <line x1={innerPt.x} y1={innerPt.y} x2={outerPt.x} y2={outerPt.y}
-              stroke="hsl(var(--border))" strokeWidth="0.5" />
+            <line x1={innerPt.x} y1={innerPt.y} x2={outerPt.x} y2={outerPt.y} stroke="hsl(var(--border))" strokeWidth="0.5" />
             <path
               d={slicePath(startAngle, endAngle, ZONE_INNER, ZONE_OUTER)}
               fill={isSelected ? 'hsl(var(--primary) / 0.08)' : 'transparent'}
               className="pointer-events-none"
             />
-            <text x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central"
-              transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p.x}, ${p.y})`}
+            <text
+              x={p.x}
+              y={p.y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              transform={`rotate(${isBottom ? angle + 180 : angle}, ${p.x}, ${p.y})`}
               className="text-[9px] font-bold pointer-events-none select-none"
-              fill={isSelected ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}>
+              fill={isSelected ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}
+            >
               {zone}
             </text>
-            <text x={p2.x} y={p2.y} textAnchor="middle" dominantBaseline="central"
-              transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p2.x}, ${p2.y})`}
+            <text
+              x={p2.x}
+              y={p2.y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              transform={`rotate(${isBottom ? angle + 180 : angle}, ${p2.x}, ${p2.y})`}
               className="text-[6px] pointer-events-none select-none"
-              fill="hsl(var(--muted-foreground))">
+              fill="hsl(var(--muted-foreground))"
+            >
               {info?.aspects.join(' · ')}
             </text>
           </g>
         );
       })}
+
+      {/* 45 Vastu Devtas ring */}
+      <circle cx={CX} cy={CY} r={DEVTA_RING_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="0.6" />
+      <circle cx={CX} cy={CY} r={DEVTA_RING_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="0.6" />
+      {DEVTAS.map((devta) => {
+        if (devta.zone === 'Brahmasthan') {
+          return (
+            <text
+              key={`devta-${devta.no}`}
+              x={CX}
+              y={CY + 34}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="text-[7px] font-semibold pointer-events-none select-none"
+              fill="hsl(var(--foreground))"
+            >
+              BRAHMA
+            </text>
+          );
+        }
+
+        const degree = Number(devta.degree ?? 0);
+        const marker = polar(degree, DEVTA_RING_OUTER - 3);
+        const labelPoint = polar(degree, DEVTA_LABEL_R);
+        const isActive = hoveredDevta?.no === devta.no;
+        const zoneColor = DEVTA_ZONE_COLOR[devta.zone] || 'hsl(var(--muted))';
+
+        return (
+          <g key={`devta-${devta.no}`}>
+            <line x1={marker.x} y1={marker.y} x2={labelPoint.x} y2={labelPoint.y} stroke={zoneColor} strokeWidth="0.6" opacity="0.45" />
+            <circle cx={marker.x} cy={marker.y} r={isActive ? 3.2 : 2.1} fill={zoneColor} />
+            <circle
+              cx={marker.x}
+              cy={marker.y}
+              r={8}
+              fill="transparent"
+              className="cursor-pointer"
+              onMouseEnter={() => setHoveredDevta(devta)}
+              onFocus={() => setHoveredDevta(devta)}
+              onClick={() => setHoveredDevta(devta)}
+              aria-label={`${devta.no}. ${devta.devtaName}`}
+              role="button"
+              tabIndex={0}
+            />
+          </g>
+        );
+      })}
+
+      {hoveredDevta && (
+        <g>
+          <rect x={20} y={20} width={300} height={74} rx={8} fill="hsl(var(--card))" stroke="hsl(var(--border))" />
+          <text x={32} y={41} className="text-[11px] font-semibold" fill="hsl(var(--foreground))">
+            {`${hoveredDevta.no}. ${hoveredDevta.devtaName}`}
+          </text>
+          <text x={32} y={59} className="text-[9px]" fill="hsl(var(--muted-foreground))">
+            {`${hoveredDevta.direction} · ${hoveredDevta.degreeRange} · ${hoveredDevta.zone}`}
+          </text>
+          <text x={32} y={76} className="text-[9px]" fill="hsl(var(--muted-foreground))">
+            {`Grid: ${hoveredDevta.ozone}`}
+          </text>
+        </g>
+      )}
 
       {/* Boundary circles for slices */}
       <circle cx={CX} cy={CY} r={SLICE_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
@@ -87,8 +199,15 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
         const outer = polar(angle, SLICE_INNER);
         const isZoneBoundary = i % 2 === 0;
         return (
-          <line key={`rl-${i}`} x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y}
-            stroke="hsl(var(--border))" strokeWidth={isZoneBoundary ? '0.8' : '0.4'} />
+          <line
+            key={`rl-${i}`}
+            x1={inner.x}
+            y1={inner.y}
+            x2={outer.x}
+            y2={outer.y}
+            stroke="hsl(var(--border))"
+            strokeWidth={isZoneBoundary ? '0.8' : '0.4'}
+          />
         );
       })}
 
@@ -111,19 +230,28 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
           <g key={label}>
             <path
               d={slicePath(startAngle, endAngle, SLICE_INNER, SLICE_OUTER)}
-              fill={fill} stroke="hsl(var(--border))" strokeWidth="0.5"
+              fill={fill}
+              stroke="hsl(var(--border))"
+              strokeWidth="0.5"
               className="cursor-pointer transition-colors duration-150 outline-none"
               onClick={() => onSliceClick(label)}
               onMouseEnter={() => setHovered(label)}
               onMouseLeave={() => setHovered(null)}
-              role="button" tabIndex={0} aria-label={`${label} – ${SLICE_TO_ZONE[label]}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`${label} – ${SLICE_TO_ZONE[label]}`}
               onKeyDown={(e) => e.key === 'Enter' && onSliceClick(label)}
               style={{ outline: 'none' }}
             />
-            <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
+            <text
+              x={lp.x}
+              y={lp.y}
+              textAnchor="middle"
+              dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${lp.x}, ${lp.y})`}
               className="text-[9px] font-semibold pointer-events-none select-none"
-              fill="hsl(var(--foreground))">
+              fill="hsl(var(--foreground))"
+            >
               {label}
             </text>
           </g>
@@ -132,21 +260,40 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
 
       {/* Center text */}
       <circle cx={CX} cy={CY} r={SLICE_INNER - 5} fill="hsl(var(--card))" />
-      <text x={CX} y={CY - 10} textAnchor="middle" dominantBaseline="central"
+      <text
+        x={CX}
+        y={CY - 10}
+        textAnchor="middle"
+        dominantBaseline="central"
         className="text-lg font-display font-bold pointer-events-none select-none"
-        fill="hsl(var(--foreground))">Vastu</text>
-      <text x={CX} y={CY + 14} textAnchor="middle" dominantBaseline="central"
+        fill="hsl(var(--foreground))"
+      >
+        Vastu
+      </text>
+      <text
+        x={CX}
+        y={CY + 14}
+        textAnchor="middle"
+        dominantBaseline="central"
         className="text-lg font-display font-bold pointer-events-none select-none"
-        fill="hsl(var(--foreground))">Chakra</text>
+        fill="hsl(var(--foreground))"
+      >
+        Chakra
+      </text>
 
       {/* Cardinal labels */}
-      {([
-        { l: 'N', a: 0 }, { l: 'E', a: 90 }, { l: 'S', a: 180 }, { l: 'W', a: 270 },
-      ] as const).map(({ l, a }) => {
+      {[{ l: 'N', a: 0 }, { l: 'E', a: 90 }, { l: 'S', a: 180 }, { l: 'W', a: 270 }].map(({ l, a }) => {
         const p = polar(a, ZONE_OUTER + 18);
         return (
-          <text key={l} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central"
-            className="text-sm font-bold pointer-events-none" fill="hsl(var(--primary))">
+          <text
+            key={l}
+            x={p.x}
+            y={p.y}
+            textAnchor="middle"
+            dominantBaseline="central"
+            className="text-sm font-bold pointer-events-none"
+            fill="hsl(var(--primary))"
+          >
             {l}
           </text>
         );

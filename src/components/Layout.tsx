@@ -7,6 +7,8 @@ const NAV = [
   { path: '/entrances', label: 'Entrances' },
   { path: '/objects', label: 'Objects' },
   { path: '/remedies', label: 'Remedies' },
+  { path: '/colors', label: 'Colors' },
+  { path: '/metals', label: 'Metals' },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
