@@ -33,6 +33,58 @@ export interface ZoneInfo {
   relationships: string;
 }
 
+export interface ElementInfo {
+  beneficColors: string[];
+  maleficColors: string[];
+  beneficMetals: string[];
+  maleficMetals: string[];
+  planets: string[];
+  directions: string[];
+}
+
+export const ELEMENT_DETAILS: Record<string, ElementInfo> = {
+  Earth: {
+    beneficColors: ['Yellow', 'Beige', 'Cream'],
+    maleficColors: ['Green', 'Brown', 'Blue', 'Black', 'Red', 'Purple', 'Violet', 'Orange', 'Pink'],
+    beneficMetals: ['Brass'],
+    maleficMetals: ['Stainless Steel', 'Aluminum'],
+    planets: ['Rahu'],
+    directions: ['South of South West', 'South West'],
+  },
+  Water: {
+    beneficColors: ['Blue', 'Black', 'White', 'Grey', 'Silver', 'Metallic Colors'],
+    maleficColors: ['Yellow', 'Red', 'Orange', 'Violet', 'Pink', 'Purple'],
+    beneficMetals: ['Aluminum', 'Iron'],
+    maleficMetals: ['Copper', 'Brass'],
+    planets: ['Mercury', 'Moon', 'Jupiter', 'Ketu'],
+    directions: ['North of North West', 'North', 'North of North East', 'North East'],
+  },
+  Fire: {
+    beneficColors: ['Green', 'Brown', 'Red', 'Orange', 'Pink', 'Violet', 'Purple'],
+    maleficColors: ['Blue', 'Black', 'White', 'Silver', 'Grey', 'Golden', 'Metallic'],
+    beneficMetals: ['Stainless Steel', 'Copper'],
+    maleficMetals: ['Aluminum', 'Iron'],
+    planets: ['Venus', 'Mars'],
+    directions: ['South East', 'South of South East', 'South'],
+  },
+  Air: {
+    beneficColors: ['Wooden', 'Brown', 'Green'],
+    maleficColors: ['Yellow', 'Golden', 'Silver', 'White', 'Grey'],
+    beneficMetals: ['Stainless Steel', 'Aluminum'],
+    maleficMetals: ['Brass', 'Iron'],
+    planets: ['Sun'],
+    directions: ['East of North East', 'East', 'East of South East'],
+  },
+  Akash: {
+    beneficColors: ['Metallic Colors', 'Silver', 'Grey', 'Gold'],
+    maleficColors: ['Green', 'Brown', 'Red', 'Violet', 'Orange', 'Purple', 'Pink'],
+    beneficMetals: ['Iron', 'Brass'],
+    maleficMetals: ['Stainless Steel', 'Copper'],
+    planets: ['Saturn'],
+    directions: ['West of South West', 'West', 'West of North West', 'North West'],
+  },
+};
+
 export const ZONES: Record<string, ZoneInfo> = {
   North: { aspects: ['Money', 'Opportunities'], element: 'Water', relationships: 'Customers, Clients' },
   NNE: { aspects: ['Health', 'Immunity'], element: 'Water', relationships: 'Healers, Doctors' },
