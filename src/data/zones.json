@@ -1,0 +1,66 @@
+[
+  {
+    "Zone": "NE",
+    "Relationships under governance": "Self and God"
+  },
+  {
+    "Zone": "ENE",
+    "Relationships under governance": "Friends"
+  },
+  {
+    "Zone": "East",
+    "Relationships under governance": "Society, Government Departments"
+  },
+  {
+    "Zone": "ESE",
+    "Relationships under governance": "In-Laws, Unlawful relationships"
+  },
+  {
+    "Zone": "SE",
+    "Relationships under governance": "Domestic helper, cleaner, washer"
+  },
+  {
+    "Zone": "SSE",
+    "Relationships under governance": "Siblings, Relatives, Influential Persons, Police"
+  },
+  {
+    "Zone": "South",
+    "Relationships under governance": "Neighbours, Society"
+  },
+  {
+    "Zone": "SSW",
+    "Relationships under governance": "Sweeper, Enemy"
+  },
+  {
+    "Zone": "SW",
+    "Relationships under governance": "Parents, Spouse, Siblings, Children, Customer, Partner"
+  },
+  {
+    "Zone": "WSW",
+    "Relationships under governance": "Technical and Skilled Employees, Staff"
+  },
+  {
+    "Zone": "West",
+    "Relationships under governance": "Teacher, Guru, Friends, Supplier"
+  },
+  {
+    "Zone": "WNW",
+    "Relationships under governance": "Counsellors"
+  },
+  {
+    "Zone": "NW",
+    "Relationships under governance": "Bank and Financial Institutions, Work-Partner"
+  },
+  {
+    "Zone": "NNW",
+    "Relationships under governance": "Sex-partner, Extra Marital Affair"
+  },
+  {
+    "Zone": "North",
+    "Relationships under governance": "Customers, Clients"
+  },
+  {
+    "Zone": "NNE",
+    "Relationships under governance": "Healers, Doctors"
+  }
+]

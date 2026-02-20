@@ -1,14 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import VastuChakra from '@/components/VastuChakra';
+import ZoneDetailPanel from '@/components/ZoneDetailPanel';
+import { SLICE_TO_ZONE } from '@/data/vastuData';
 
-const Index = () => {
+export default function Index() {
+  const [selectedSlice, setSelectedSlice] = useState<string | null>(null);
+  const zoneName = selectedSlice ? SLICE_TO_ZONE[selectedSlice] : null;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="flex flex-col lg:flex-row" style={{ minHeight: 'calc(100vh - 56px)' }}>
+      <div className="flex-1 flex flex-col items-center justify-center p-4 lg:p-8">
+        <h1 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-1 text-center">
+          Interactive Vastu Chakra
+        </h1>
+        <p className="text-sm text-muted-foreground mb-6 text-center">
+          Click any slice to explore zone details
+        </p>
+        <VastuChakra selectedSlice={selectedSlice} onSliceClick={setSelectedSlice} />
       </div>
+      {selectedSlice && zoneName && (
+        <div className="lg:w-[400px] xl:w-[440px] border-t lg:border-t-0 lg:border-l border-border bg-card max-h-[50vh] lg:max-h-none overflow-y-auto">
+          <ZoneDetailPanel sliceId={selectedSlice} zoneName={zoneName} onClose={() => setSelectedSlice(null)} />
+        </div>
+      )}
     </div>
   );
-};
-
-export default Index;
+}
