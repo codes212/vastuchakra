@@ -1,9 +1,23 @@
 import { useState } from 'react';
 import { SLICES, SLICE_ANGLE, SLICE_TO_ZONE, ZONES, ZONE_ANGLES } from '@/data/vastuData';
+import devtasData from '@/data/VastuDevtas.json';
 
 const CX = 350, CY = 350;
 const SLICE_OUTER = 240, SLICE_INNER = 110, LABEL_R = 180;
 const ZONE_OUTER = 310, ZONE_INNER = 245;
+
+const DEVTA_RING_INNER = 118;
+const DEVTA_RING_OUTER = 158;
+
+const DEVTA_ZONE_COLOR: Record<string, string> = {
+  North: '#22c55e', NNW: '#0ea5e9', NE: '#10b981', ENE: '#14b8a6',
+  East: '#3b82f6', ESE: '#f97316', SE: '#ef4444', South: '#dc2626',
+  SSW: '#f97316', SW: '#b91c1c', WSW: '#2563eb', West: '#eab308',
+  WNW: '#84cc16', NW: '#06b6d4', Brahmasthan: '#facc15',
+};
+
+const shortDevtaName = (name: string) => name.split('(')[0].trim().split(/\s+/)[0].slice(0, 8).toUpperCase();
+
 
 function toRad(deg: number) {
   return ((deg - 90) * Math.PI) / 180;
@@ -71,6 +85,52 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
               className="text-[6px] pointer-events-none select-none"
               fill="hsl(var(--muted-foreground))">
               {info?.aspects.join(' · ')}
+            </text>
+          </g>
+        );
+      })}
+
+
+      {/* 45 Vastu Devtas ring */}
+      <circle cx={CX} cy={CY} r={DEVTA_RING_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="0.6" />
+      <circle cx={CX} cy={CY} r={DEVTA_RING_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="0.6" />
+      {(devtasData as any[]).map((devta) => {
+        if (devta.zone === 'Brahmasthan') {
+          return (
+            <text
+              key={`devta-${devta.no}`}
+              x={CX}
+              y={CY + 34}
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="text-[7px] font-semibold pointer-events-none select-none"
+              fill="hsl(var(--foreground))"
+            >
+              BRAHMA
+            </text>
+          );
+        }
+
+        const degree = Number(devta.degree ?? 0);
+        const mid = polar(degree, (DEVTA_RING_INNER + DEVTA_RING_OUTER) / 2);
+        const dot = polar(degree, DEVTA_RING_OUTER - 3);
+        const isBottom = degree > 90 && degree < 270;
+        const zoneColor = DEVTA_ZONE_COLOR[devta.zone] || 'hsl(var(--muted))';
+
+        return (
+          <g key={`devta-${devta.no}`}>
+            <circle cx={dot.x} cy={dot.y} r={1.8} fill={zoneColor} />
+            <text
+              x={mid.x}
+              y={mid.y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              transform={`rotate(${isBottom ? degree + 180 : degree}, ${mid.x}, ${mid.y})`}
+              className="text-[5.5px] font-semibold pointer-events-none select-none"
+              fill="hsl(var(--foreground))"
+            >
+              {shortDevtaName(devta.devtaName)}
+              <title>{`${devta.no}. ${devta.devtaName} · ${devta.degreeRange} · ${devta.zone}`}</title>
             </text>
           </g>
         );
