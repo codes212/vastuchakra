@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ELEMENT_DETAILS, ZONES, ZONE_SHORT_TO_FULL } from '@/data/vastuData';
+import { ELEMENT_DETAILS, ZONES, ZONE_SHORT_TO_FULL, SLICE_TO_DEVTA } from '@/data/vastuData';
 import entrancesData from '@/data/entrances.json';
 import objectsVerdictsData from '@/data/objects-verdicts.json';
 import objectsRoomsData from '@/data/objects-rooms.json';
+import devtasData from '@/data/VastuDevtas.json';
 import { X } from 'lucide-react';
 
 interface Props {
@@ -50,6 +51,12 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
   const objectVerdicts = (objectsVerdictsData as any[]).find(o => o.Zones === fullName);
   const objectRooms = (objectsRoomsData as any[]).find(o => o.Zones === fullName);
 
+  const devtaName = SLICE_TO_DEVTA[sliceId];
+  const devta = devtaName
+    ? (devtasData as any[]).find(d => d.devtaName?.toLowerCase() === devtaName.toLowerCase()
+        || d.devtaName?.toLowerCase() === devtaName.replace(/^(.)/, (m: string) => m.toLowerCase()).toLowerCase())
+    : null;
+
   const objects = objectVerdicts
     ? Object.entries(objectVerdicts)
         .filter(([k]) => k.endsWith('_Verdict'))
@@ -83,6 +90,7 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
       <Tabs defaultValue="overview" className="flex-1 flex flex-col min-h-0">
         <TabsList className="mx-4 mt-3 flex-shrink-0 w-[calc(100%-2rem)] overflow-x-auto whitespace-nowrap justify-start">
           <TabsTrigger className="shrink-0" value="overview">Overview</TabsTrigger>
+          <TabsTrigger className="shrink-0" value="devta">Devta</TabsTrigger>
           <TabsTrigger className="shrink-0" value="doavoid">Do / Avoid</TabsTrigger>
           <TabsTrigger className="shrink-0" value="objects">Objects</TabsTrigger>
           {elementInfo && <TabsTrigger className="shrink-0" value="colors">Colors</TabsTrigger>}
@@ -140,6 +148,26 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
                   </div>
                 </CardContent>
               </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="devta" className="mt-0 space-y-4">
+            {devta ? (
+              <>
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-display">{devta.devtaName}</CardTitle>
+                    <p className="text-xs text-muted-foreground">Devta #{devta.devtaNumber} · Slice {sliceId}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
+                      {devta.devtaHint}
+                    </p>
+                  </CardContent>
+                </Card>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">No devta data available for this slice.</p>
             )}
           </TabsContent>
 

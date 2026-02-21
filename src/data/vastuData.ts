@@ -133,3 +133,42 @@ export const ZONE_ANGLES: Record<string, number> = {
   South: 180, SSW: 202.5, SW: 225, WSW: 247.5,
   West: 270, WNW: 292.5, NW: 315, NNW: 337.5,
 };
+
+// Devta mapped to each of the 32 outer slices
+export const SLICE_TO_DEVTA: Record<string, string> = {
+  N5: 'Soma', N4: 'Bhallat', N3: 'Mukhya', N2: 'Naag', N1: 'Rog',
+  N6: 'Sarp', N7: 'Aditi', N8: 'Diti',
+  E1: 'Shikhi', E2: 'Parjanya', E3: 'Jayant', E4: 'Aryama',
+  E5: 'Surya', E6: 'Satya', E7: 'Bhrish', E8: 'Akash',
+  S1: 'Anil', S2: 'Pusha', S3: 'Vitatha', S4: 'Vivaswan',
+  S5: 'Yama', S6: 'Gandharva', S7: 'Bhringraj', S8: 'Mriga',
+  W1: 'Pitra', W2: 'Dauvarik', W3: 'Sugreev', W4: 'Mitra',
+  W5: 'Varun', W6: 'Pushpdant', W7: 'Asur', W8: 'Shosh',
+};
+
+// Inner zone devtas (middle ring) — small corner devtas
+export interface InnerDevta {
+  name: string;
+  startDeg: number;
+  endDeg: number;
+  color: string;
+}
+
+export const INNER_CORNER_DEVTAS: InnerDevta[] = [
+  { name: 'Aapa', startDeg: 28.125, endDeg: 45, color: 'hsl(45, 80%, 55%)' },
+  { name: 'Aapvatsa', startDeg: 45, endDeg: 61.875, color: 'hsl(45, 70%, 60%)' },
+  { name: 'Savitra', startDeg: 118.125, endDeg: 135, color: 'hsl(0, 70%, 55%)' },
+  { name: 'Savita', startDeg: 135, endDeg: 151.875, color: 'hsl(0, 60%, 60%)' },
+  { name: 'Indra', startDeg: 208.125, endDeg: 225, color: 'hsl(120, 50%, 45%)' },
+  { name: 'Jaya', startDeg: 225, endDeg: 241.875, color: 'hsl(120, 45%, 50%)' },
+  { name: 'Rudra', startDeg: 298.125, endDeg: 315, color: 'hsl(220, 60%, 55%)' },
+  { name: 'Rajyakshama', startDeg: 315, endDeg: 331.875, color: 'hsl(220, 50%, 60%)' },
+];
+
+// Inner large cardinal devtas (middle ring)
+export const INNER_CARDINAL_DEVTAS: InnerDevta[] = [
+  { name: 'Bhudhar', startDeg: 331.875, endDeg: 28.125, color: 'hsl(45, 75%, 50%)' },
+  { name: 'Aryama', startDeg: 61.875, endDeg: 118.125, color: 'hsl(35, 80%, 50%)' },
+  { name: 'Vivaswan', startDeg: 151.875, endDeg: 208.125, color: 'hsl(0, 65%, 50%)' },
+  { name: 'Mitra', startDeg: 241.875, endDeg: 298.125, color: 'hsl(200, 60%, 50%)' },
+];
