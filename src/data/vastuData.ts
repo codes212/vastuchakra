@@ -97,10 +97,10 @@ export const ZONES: Record<string, ZoneInfo> = {
   South: { aspects: ['Relaxation', 'Fame'], element: 'Fire', relationships: 'Neighbours, Society' },
   SSW: { aspects: ['Expenditure', 'Disposal'], element: 'Earth', relationships: 'Sweeper, Enemy' },
   SW: { aspects: ['Relationship', 'Skill'], element: 'Earth', relationships: 'Parents, Spouse, Siblings, Children, Customer, Partner' },
-  WSW: { aspects: ['Education', 'Savings'], element: 'Earth', relationships: 'Technical and Skilled Employees, Staff' },
-  West: { aspects: ['Gain', 'Profits'], element: 'Earth', relationships: 'Teacher, Guru, Friends, Supplier' },
-  WNW: { aspects: ['Depression', 'Detoxify'], element: 'Air', relationships: 'Counsellors' },
-  NW: { aspects: ['Support', 'Banking'], element: 'Air', relationships: 'Bank and Financial Institutions, Work-Partner' },
+  WSW: { aspects: ['Education', 'Savings'], element: 'Akash', relationships: 'Technical and Skilled Employees, Staff' },
+  West: { aspects: ['Gain', 'Profits'], element: 'Akash', relationships: 'Teacher, Guru, Friends, Supplier' },
+  WNW: { aspects: ['Depression', 'Detoxify'], element: 'Akash', relationships: 'Counsellors' },
+  NW: { aspects: ['Support', 'Banking'], element: 'Akash', relationships: 'Bank and Financial Institutions, Work-Partner' },
   NNW: { aspects: ['Sex', 'Attraction'], element: 'Water', relationships: 'Sex-partner, Extra Marital Affair' },
 };
 
