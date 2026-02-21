@@ -137,13 +137,13 @@ export const ZONE_ANGLES: Record<string, number> = {
 // Devta mapped to each of the 32 outer slices
 export const SLICE_TO_DEVTA: Record<string, string> = {
   N5: 'Soma', N4: 'Bhallat', N3: 'Mukhya', N2: 'Naag', N1: 'Rog',
-  N6: 'Sarp', N7: 'Aditi', N8: 'Diti',
+  N6: 'Bhujag', N7: 'Aditi', N8: 'Diti',
   E1: 'Shikhi', E2: 'Parjanya', E3: 'Jayant', E4: 'Mahendra',
   E5: 'Surya', E6: 'Satya', E7: 'Bhrish', E8: 'Akash',
   S1: 'Anil', S2: 'Pusha', S3: 'Vitatha', S4: 'Grihakshat',
   S5: 'Yama', S6: 'Gandharva', S7: 'Bhringraj', S8: 'Mriga',
-  W1: 'Pitra', W2: 'Dauvarik', W3: 'Sugreev', W4: 'Pushpadant',
-  W5: 'Varun', W6: 'Asur', W7: 'Shosha', W8: 'Papyakshma',
+  W1: 'Pitra', W2: 'Dauvarik', W3: 'Sugreev', W4: 'Pushpdant',
+  W5: 'Varun', W6: 'Asur', W7: 'Shosh', W8: 'Papyakshma',
 };
 
 // Inner zone devtas (middle ring) — small corner devtas
