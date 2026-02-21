@@ -6,6 +6,7 @@ import {
 } from '@/data/vastuData';
 
 const CX = 400, CY = 400;
+// Ring radii (inside→out): Brahma center, inner devta ring, 32 slices, zone ring, degree ring
 const BRAHMA_R = 45;
 const INNER_R1 = 50, INNER_R2 = 130;
 const SLICE_INNER = 135, SLICE_OUTER = 260, LABEL_R = 200;
@@ -29,13 +30,10 @@ function arcPath(start: number, end: number, r1: number, r2: number, largeArc = 
 interface Props {
   selectedSlice: string | null;
   onSliceClick: (slice: string) => void;
-  onInnerDevtaClick?: (devtaName: string) => void;
-  selectedInnerDevta?: string | null;
 }
 
-export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaClick, selectedInnerDevta }: Props) {
+export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
-  const [hoveredInner, setHoveredInner] = useState<string | null>(null);
   const selectedZone = selectedSlice ? SLICE_TO_ZONE[selectedSlice] : null;
 
   return (
@@ -54,7 +52,7 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
             <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="hsl(var(--border))" strokeWidth="0.5" />
             <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? angle + 180 : angle}, ${lp.x}, ${lp.y})`}
-              className="text-[8px] pointer-events-none select-none" fill="hsl(var(--muted-foreground))">
+              className="text-[7px] pointer-events-none select-none" fill="hsl(var(--muted-foreground))">
               {angle}°
             </text>
           </g>
@@ -85,13 +83,13 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
               className="pointer-events-none" />
             <text x={p.x} y={p.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p.x}, ${p.y})`}
-              className="text-[9px] font-bold pointer-events-none select-none"
+              className="text-[8px] font-bold pointer-events-none select-none"
               fill={isSelected ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}>
               {zone}
             </text>
             <text x={p2.x} y={p2.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${p2.x}, ${p2.y})`}
-              className="text-[6px] pointer-events-none select-none"
+              className="text-[5.5px] pointer-events-none select-none"
               fill="hsl(var(--muted-foreground))">
               {info?.aspects.join(' · ')}
             </text>
@@ -102,6 +100,7 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
       {/* ===== 32 clickable slices ring (with devta names) ===== */}
       <circle cx={CX} cy={CY} r={SLICE_OUTER} fill="none" stroke="hsl(var(--border))" strokeWidth="1.5" />
       <circle cx={CX} cy={CY} r={SLICE_INNER} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
+      {/* Radial lines */}
       {Array.from({ length: 32 }, (_, i) => {
         const angle = i * SLICE_ANGLE;
         const inner = polar(angle, SLICE_INNER);
@@ -142,13 +141,13 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
             />
             <text x={sliceLp.x} y={sliceLp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${sliceLp.x}, ${sliceLp.y})`}
-              className="text-[10px] font-bold pointer-events-none select-none"
+              className="text-[9px] font-bold pointer-events-none select-none"
               fill="hsl(var(--foreground))">
               {label}
             </text>
             <text x={devtaLp.x} y={devtaLp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? midAngle + 180 : midAngle}, ${devtaLp.x}, ${devtaLp.y})`}
-              className="text-[7.5px] pointer-events-none select-none"
+              className="text-[6.5px] pointer-events-none select-none"
               fill="hsl(var(--primary))">
               {devtaName}
             </text>
@@ -156,39 +155,26 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
         );
       })}
 
-      {/* ===== Middle ring: Inner zone devtas (CLICKABLE) ===== */}
+      {/* ===== Middle ring: Inner zone devtas ===== */}
       <circle cx={CX} cy={CY} r={INNER_R2} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
       <circle cx={CX} cy={CY} r={INNER_R1} fill="none" stroke="hsl(var(--border))" strokeWidth="1" />
 
-      {/* Corner devtas (small arcs) - clickable */}
+      {/* Corner devtas (small arcs) */}
       {INNER_CORNER_DEVTAS.map((d) => {
         const mid = (d.startDeg + d.endDeg) / 2;
-        const labelR = (INNER_R1 + INNER_R2) / 2;
-        const lp = polar(mid, labelR);
+        const lp = polar(mid, (INNER_R1 + INNER_R2) / 2);
         const isBottom = mid > 90 && mid < 270;
         const innerPt = polar(d.startDeg, INNER_R1);
         const outerPt = polar(d.startDeg, INNER_R2);
-        const isSelected = selectedInnerDevta === d.name;
-        const isHov = hoveredInner === d.name;
-
         return (
           <g key={`inner-${d.name}`}>
             <path d={arcPath(d.startDeg, d.endDeg, INNER_R1, INNER_R2)}
-              fill={isSelected ? 'hsl(var(--primary) / 0.35)' : isHov ? 'hsl(var(--primary) / 0.15)' : d.color}
-              fillOpacity={isSelected || isHov ? 1 : 0.25}
-              stroke="hsl(var(--border))" strokeWidth="0.5"
-              className="cursor-pointer transition-colors duration-150"
-              onClick={() => onInnerDevtaClick?.(d.name)}
-              onMouseEnter={() => setHoveredInner(d.name)}
-              onMouseLeave={() => setHoveredInner(null)}
-              style={{ outline: 'none' }}
-            />
+              fill={d.color} fillOpacity={0.25} stroke="hsl(var(--border))" strokeWidth="0.5" className="pointer-events-none" />
             <line x1={innerPt.x} y1={innerPt.y} x2={outerPt.x} y2={outerPt.y}
               stroke="hsl(var(--border))" strokeWidth="0.5" />
-            {/* Use writing-mode for small arcs to stack text vertically */}
             <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? mid + 180 : mid}, ${lp.x}, ${lp.y})`}
-              className="text-[7.5px] font-semibold pointer-events-none select-none"
+              className="text-[6px] font-semibold pointer-events-none select-none"
               fill="hsl(var(--foreground))">
               {d.name}
             </text>
@@ -196,7 +182,7 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
         );
       })}
 
-      {/* Cardinal devtas (large arcs) - clickable */}
+      {/* Cardinal devtas (large arcs) */}
       {INNER_CARDINAL_DEVTAS.map((d) => {
         const span = d.endDeg >= d.startDeg ? d.endDeg - d.startDeg : 360 - d.startDeg + d.endDeg;
         const mid = d.startDeg + span / 2;
@@ -206,26 +192,15 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
         const large = span > 180;
         const innerPt = polar(d.startDeg, INNER_R1);
         const outerPt = polar(d.startDeg, INNER_R2);
-        const isSelected = selectedInnerDevta === d.name;
-        const isHov = hoveredInner === d.name;
-
         return (
           <g key={`inner-card-${d.name}`}>
             <path d={arcPath(d.startDeg, d.endDeg, INNER_R1, INNER_R2, large)}
-              fill={isSelected ? 'hsl(var(--primary) / 0.35)' : isHov ? 'hsl(var(--primary) / 0.15)' : d.color}
-              fillOpacity={isSelected || isHov ? 1 : 0.2}
-              stroke="hsl(var(--border))" strokeWidth="0.5"
-              className="cursor-pointer transition-colors duration-150"
-              onClick={() => onInnerDevtaClick?.(d.name)}
-              onMouseEnter={() => setHoveredInner(d.name)}
-              onMouseLeave={() => setHoveredInner(null)}
-              style={{ outline: 'none' }}
-            />
+              fill={d.color} fillOpacity={0.2} stroke="hsl(var(--border))" strokeWidth="0.5" className="pointer-events-none" />
             <line x1={innerPt.x} y1={innerPt.y} x2={outerPt.x} y2={outerPt.y}
               stroke="hsl(var(--border))" strokeWidth="0.5" />
             <text x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="central"
               transform={`rotate(${isBottom ? normalizedMid + 180 : normalizedMid}, ${lp.x}, ${lp.y})`}
-              className="text-[10px] font-bold pointer-events-none select-none"
+              className="text-[8px] font-bold pointer-events-none select-none"
               fill="hsl(var(--foreground))">
               {d.name}
             </text>
@@ -239,7 +214,7 @@ export default function VastuChakra({ selectedSlice, onSliceClick, onInnerDevtaC
       <circle cx={CX} cy={CY} r={20} fill="hsl(45, 90%, 60%)" fillOpacity={0.5}
         stroke="hsl(var(--border))" strokeWidth="0.5" />
       <text x={CX} y={CY} textAnchor="middle" dominantBaseline="central"
-        className="text-[10px] font-display font-bold pointer-events-none select-none"
+        className="text-[9px] font-display font-bold pointer-events-none select-none"
         fill="hsl(var(--foreground))">BRAHMA</text>
 
       {/* Cardinal labels */}
