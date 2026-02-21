@@ -12,6 +12,7 @@ interface Props {
   sliceId: string;
   zoneName: string;
   onClose: () => void;
+  innerDevtaName?: string | null;
 }
 
 const verdictBadge = (verdict: string) => {
@@ -42,7 +43,7 @@ const ColorChip = ({ name }: { name: string }) => (
   </div>
 );
 
-export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
+export default function ZoneDetailPanel({ sliceId, zoneName, onClose, innerDevtaName }: Props) {
   const zone = ZONES[zoneName];
   const elementInfo = zone ? ELEMENT_DETAILS[zone.element] : undefined;
   const fullName = ZONE_SHORT_TO_FULL[zoneName] || zoneName;
@@ -87,7 +88,7 @@ export default function ZoneDetailPanel({ sliceId, zoneName, onClose }: Props) {
         </button>
       </div>
 
-      <Tabs defaultValue="overview" className="flex-1 flex flex-col min-h-0">
+      <Tabs defaultValue={innerDevtaName ? "devta" : "overview"} className="flex-1 flex flex-col min-h-0 overflow-hidden">
         <TabsList className="mx-4 mt-3 flex-shrink-0 w-[calc(100%-2rem)] overflow-x-auto whitespace-nowrap justify-start">
           <TabsTrigger className="shrink-0" value="overview">Overview</TabsTrigger>
           <TabsTrigger className="shrink-0" value="devta">Devta</TabsTrigger>
