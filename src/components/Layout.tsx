@@ -5,6 +5,7 @@ const NAV = [
   { path: '/', label: 'Home' },
   { path: '/zones', label: 'Zones' },
   { path: '/entrances', label: 'Entrances' },
+  { path: '/devtas', label: 'Devtas' },
   { path: '/objects', label: 'Objects' },
   { path: '/remedies', label: 'Remedies' },
   { path: '/colors', label: 'Colors' },

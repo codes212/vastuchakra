@@ -213,12 +213,9 @@ export default function VastuChakra({ selectedSlice, onSliceClick }: Props) {
         stroke="hsl(var(--border))" strokeWidth="1" />
       <circle cx={CX} cy={CY} r={20} fill="hsl(45, 90%, 60%)" fillOpacity={0.5}
         stroke="hsl(var(--border))" strokeWidth="0.5" />
-      <text x={CX} y={CY - 6} textAnchor="middle" dominantBaseline="central"
-        className="text-[10px] font-display font-bold pointer-events-none select-none"
+      <text x={CX} y={CY} textAnchor="middle" dominantBaseline="central"
+        className="text-[9px] font-display font-bold pointer-events-none select-none"
         fill="hsl(var(--foreground))">BRAHMA</text>
-      <text x={CX} y={CY + 8} textAnchor="middle" dominantBaseline="central"
-        className="text-[5px] pointer-events-none select-none"
-        fill="hsl(var(--muted-foreground))">(The Bindu)</text>
 
       {/* Cardinal labels */}
       {([
