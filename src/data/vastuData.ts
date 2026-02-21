@@ -143,7 +143,7 @@ export const SLICE_TO_DEVTA: Record<string, string> = {
   S1: 'Anil', S2: 'Pusha', S3: 'Vitatha', S4: 'Grihakshat',
   S5: 'Yama', S6: 'Gandharva', S7: 'Bhringraj', S8: 'Mriga',
   W1: 'Pitra', W2: 'Dauvarik', W3: 'Sugreev', W4: 'Pushpadant',
-  W5: 'Varun', W6: 'Pushpdant', W7: 'Asur', W8: 'Shosh',
+  W5: 'Varun', W6: 'Asur', W7: 'Shosha', W8: 'Papyakshma',
 };
 
 // Inner zone devtas (middle ring) — small corner devtas
