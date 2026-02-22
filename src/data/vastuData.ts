@@ -1,4 +1,23 @@
 export const SLICE_ANGLE = 11.25;
+export const SLICE_OFFSET = -5.625; // N5 centered on 0° (North)
+
+// Helper: get all zones covered by a degree range
+export function getZonesInRange(startDeg: number, endDeg: number): string[] {
+  const zones = new Set<string>();
+  // Walk through slices and check overlap
+  for (let i = 0; i < SLICES.length; i++) {
+    const sliceStart = i * SLICE_ANGLE + SLICE_OFFSET;
+    const sliceMid = sliceStart + SLICE_ANGLE / 2;
+    const normMid = ((sliceMid % 360) + 360) % 360;
+    // Check if mid is inside range
+    if (startDeg <= endDeg) {
+      if (normMid >= startDeg && normMid <= endDeg) zones.add(SLICE_TO_ZONE[SLICES[i]]);
+    } else {
+      if (normMid >= startDeg || normMid <= endDeg) zones.add(SLICE_TO_ZONE[SLICES[i]]);
+    }
+  }
+  return Array.from(zones);
+}
 
 // Clockwise from due North
 export const SLICES = [
