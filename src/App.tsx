@@ -12,6 +12,8 @@ import RemediesPage from "./pages/RemediesPage";
 import ColorsPage from "./pages/ColorsPage";
 import MetalsPage from "./pages/MetalsPage";
 import DevtasPage from "./pages/DevtasPage";
+import MapZoningPage from "./pages/MapZoningPage";
+import DevtaActivationPage from "./pages/DevtaActivationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,9 +27,11 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/map" element={<MapZoningPage />} />
             <Route path="/zones" element={<ZonesPage />} />
             <Route path="/entrances" element={<EntrancePage />} />
             <Route path="/devtas" element={<DevtasPage />} />
+            <Route path="/activation" element={<DevtaActivationPage />} />
             <Route path="/objects" element={<ObjectsPage />} />
             <Route path="/remedies" element={<RemediesPage />} />
             <Route path="/colors" element={<ColorsPage />} />
