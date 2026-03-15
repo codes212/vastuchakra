@@ -24,9 +24,13 @@ body.light-mode{
 }
 *{transition:background-color .22s,color .22s,border-color .22s;}
 #canvas-area{transition:background .22s;}
-body.light-mode #canvas-area{background:#ffffff;}body.light-mode .btn-p{color:#ffffff!important;box-shadow:0 2px 8px rgba(26,115,232,.35);}body.light-mode .btn-p:hover{box-shadow:0 3px 12px rgba(26,115,232,.5);}body.light-mode .sdot.active{background:rgba(26,115,232,.12);box-shadow:0 0 8px rgba(26,115,232,.3);}body.light-mode .btn-mode.active{background:rgba(26,115,232,.12);}body.light-mode .ccard.sel{background:rgba(26,115,232,.07);box-shadow:0 0 10px rgba(26,115,232,.2);}body.light-mode .fi:focus{box-shadow:0 0 0 2px rgba(26,115,232,.2);}body.light-mode .tog input:checked+.togsl{background:rgba(26,115,232,.3);}body.light-mode .tog input:checked+.togsl:before{box-shadow:0 0 6px rgba(26,115,232,.5);}body.light-mode #step-banner{border:1px solid rgba(26,115,232,.25);color:var(--accent);}body.light-mode #north-label{border:1px solid rgba(26,115,232,.3);}body.light-mode #compass-widget{position:absolute;top:14px;right:14px;width:72px;height:80px;pointer-events:none;filter:drop-shadow(0 3px 12px rgba(0,0,0,.5));}
+body.light-mode #canvas-area{background:#ffffff;}body.light-mode .btn-p{color:#ffffff!important;box-shadow:0 2px 8px rgba(26,115,232,.35);}body.light-mode .btn-p:hover{box-shadow:0 3px 12px rgba(26,115,232,.5);}body.light-mode .sdot.active{background:rgba(26,115,232,.12);box-shadow:0 0 8px rgba(26,115,232,.3);}
+body.light-mode .btn-d{border-color:rgba(220,50,50,.5);color:rgba(200,40,40,1);}body.light-mode .btn-mode.active{background:rgba(26,115,232,.12);}body.light-mode .ccard.sel{background:rgba(26,115,232,.07);box-shadow:0 0 10px rgba(26,115,232,.2);}body.light-mode .fi:focus{box-shadow:0 0 0 2px rgba(26,115,232,.2);}body.light-mode .tog input:checked+.togsl{background:rgba(26,115,232,.3);}body.light-mode .tog input:checked+.togsl:before{box-shadow:0 0 6px rgba(26,115,232,.5);}body.light-mode #step-banner{border:1px solid rgba(26,115,232,.25);color:var(--accent);}body.light-mode #north-label{border:1px solid rgba(26,115,232,.3);}body.light-mode #compass-widget{position:absolute;top:14px;right:14px;width:72px;height:80px;pointer-events:none;filter:drop-shadow(0 3px 12px rgba(0,0,0,.5));}
 #compass-widget.hidden{display:none!important;}
 #zoom-badge{border:1px solid rgba(26,115,232,.18);}body.light-mode input[type=range]::-webkit-slider-thumb{box-shadow:0 0 6px rgba(26,115,232,.4);}body.light-mode .btn-ic:hover{background:rgba(26,115,232,.1);}body.light-mode #upload-zone:hover{background:rgba(26,115,232,.04);}
+body.light-mode #btn-export:not(:disabled){background:linear-gradient(135deg,var(--accent),var(--accent2));color:#ffffff;box-shadow:0 2px 8px rgba(26,115,232,.4);}
+body.light-mode #btn-export:disabled{background:var(--border);color:var(--text3);}
+body.light-mode #theme-btn{border-color:var(--accent);color:var(--accent);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow:hidden;}
 #header{display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:52px;background:var(--surface);border-bottom:1px solid var(--border);position:relative;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.4);}#header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent3),var(--accent),var(--accent2),var(--accent));}
@@ -50,6 +54,9 @@ body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:6px 14px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.5px;cursor:pointer;transition:all .18s;border:none;text-transform:uppercase;}
 .btn-p{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--btn-text,#0a0c0f);box-shadow:0 2px 8px rgba(240,180,41,.35);}.btn-p:hover{background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 3px 12px rgba(240,180,41,.5);}.btn-p:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;}
 .btn-s{background:transparent;color:var(--text2);border:1px solid var(--border2);}.btn-s:hover{border-color:var(--accent);color:var(--accent);}.btn-s:disabled{opacity:.35;cursor:not-allowed;}
+#btn-export:disabled{opacity:0.45;cursor:not-allowed;background:var(--border2);color:var(--text3);}
+#btn-export:not(:disabled){background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0c0f;box-shadow:0 2px 8px rgba(240,180,41,.4);}
+#btn-export:not(:disabled):hover{box-shadow:0 3px 14px rgba(240,180,41,.6);transform:translateY(-1px);}
 .btn-d{background:transparent;color:var(--red);border:1px solid rgba(224,48,48,.3);}.btn-d:hover{border-color:var(--red);background:rgba(224,48,48,.07);}
 .btn-ic{width:30px;height:30px;padding:0;background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;}.btn-ic:hover{border-color:var(--accent);color:var(--accent);background:rgba(240,180,41,.1);}
 .bsm{padding:4px 9px;font-size:11px;}
@@ -120,8 +127,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
     <div style="display:flex;align-items:center"><div class="sdot" id="sd5">5</div><div class="slbl" id="sl5">Orient</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <button id="theme-btn" onclick="toggleTheme()" style="width:34px;height:28px;padding:0;background:var(--surface2);border:1px solid var(--border2);border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:14px;" title="Toggle light/dark mode">&#9788;</button>
-    <button class="btn btn-s bsm" id="btn-export" disabled onclick="exportImage()">&#11015; Export</button></div>
+    <button id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode" style="width:34px;height:28px;padding:0;background:var(--surface2);border:1.5px solid var(--accent);border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--accent);transition:all .2s;">&#9788;</button>
+    <button id="btn-export" disabled onclick="exportImage()" style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;background:var(--accent);color:#0a0c0f;border:none;opacity:1;">&#11015; Export</button></div>
 </div>
 <div id="layout">
 <div id="panel"><div class="pscroll">
@@ -728,7 +735,99 @@ function updateDirBtns(){
 
 // Old compatibility
 function setDirNorth(deg){ OT.baseDir=deg; OT.offset=0; setNorth(deg); updateDirUI(); }
-function exportImage(){if(!S.img)return;const exp=document.createElement('canvas');exp.width=S.iw;exp.height=S.ih;const ec=exp.getContext('2d');ec.drawImage(S.img,0,0);if(S.poly.length>0){ec.beginPath();ec.moveTo(S.poly[0].x,S.poly[0].y);S.poly.forEach(p=>ec.lineTo(p.x,p.y));ec.closePath();ec.strokeStyle='#e02020';ec.lineWidth=3;ec.setLineDash([10,5]);ec.stroke();ec.setLineDash([]);}if(S.center){ec.beginPath();ec.arc(S.center.x,S.center.y,10,0,Math.PI*2);ec.strokeStyle='#ff0000';ec.lineWidth=2.5;ec.stroke();ec.beginPath();ec.arc(S.center.x,S.center.y,4,0,Math.PI*2);ec.fillStyle='#ff0000';ec.fill();}if(S.visible&&S.center&&CHAKRA_IMG[S.chakra]){const R=polyRadius()*S.scale;const a=(S.northDeg*Math.PI)/180;ec.save();ec.globalAlpha=S.opacity;ec.translate(S.center.x,S.center.y);ec.rotate(a);ec.drawImage(CHAKRA_IMG[S.chakra],-R,-R,R*2,R*2);ec.restore();}const link=document.createElement('a');link.download='vastu-chakra-map.png';link.href=exp.toDataURL('image/png');link.click();}
+function exportImage(){
+  if(!S.img)return;
+
+  // Chakra radius in image-pixel space
+  const R = polyRadius() * S.scale;
+  const cx = S.center ? S.center.x : S.iw/2;
+  const cy = S.center ? S.center.y : S.ih/2;
+
+  // Compute bounding box that fits both the floor plan AND the full chakra circle
+  // Chakra extends R pixels in every direction from center
+  const chakraPad = S.visible && CHAKRA_IMG[S.chakra] ? R * 1.05 : 0;
+
+  const minX = Math.min(0,        cx - chakraPad);
+  const minY = Math.min(0,        cy - chakraPad);
+  const maxX = Math.max(S.iw,     cx + chakraPad);
+  const maxY = Math.max(S.ih,     cy + chakraPad);
+
+  const EW = Math.ceil(maxX - minX);
+  const EH = Math.ceil(maxY - minY);
+  // Offset: floor plan origin shifts to (-minX, -minY) on the export canvas
+  const OX = -minX;
+  const OY = -minY;
+
+  const exp = document.createElement('canvas');
+  exp.width  = EW;
+  exp.height = EH;
+  const ec = exp.getContext('2d');
+
+  // White background (chakra is transparent PNG — needs white behind it)
+  ec.fillStyle = '#ffffff';
+  ec.fillRect(0, 0, EW, EH);
+
+  // Floor plan
+  ec.imageSmoothingEnabled = true;
+  ec.imageSmoothingQuality = 'high';
+  ec.drawImage(S.img, OX, OY);
+
+  // Polygon outline
+  if(S.poly.length > 0){
+    ec.beginPath();
+    ec.moveTo(S.poly[0].x + OX, S.poly[0].y + OY);
+    S.poly.forEach(p => ec.lineTo(p.x + OX, p.y + OY));
+    ec.closePath();
+    ec.strokeStyle = '#e02020';
+    ec.lineWidth = Math.max(2, S.iw * 0.002);
+    ec.setLineDash([10, 5]);
+    ec.stroke();
+    ec.setLineDash([]);
+  }
+
+  // Center marker
+  if(S.center){
+    const ex = cx + OX, ey = cy + OY;
+    const mr = Math.max(6, S.iw * 0.005);
+    ec.beginPath(); ec.arc(ex,ey,mr,0,Math.PI*2);
+    ec.strokeStyle='#ff0000'; ec.lineWidth=2; ec.stroke();
+    ec.beginPath(); ec.arc(ex,ey,mr*0.4,0,Math.PI*2);
+    ec.fillStyle='#ff0000'; ec.fill();
+  }
+
+  // Chakra overlay
+  if(S.visible && S.center && CHAKRA_IMG[S.chakra]){
+    const a = (S.northDeg * Math.PI) / 180;
+    ec.save();
+    ec.globalAlpha = S.opacity;
+    ec.imageSmoothingEnabled = true;
+    ec.imageSmoothingQuality = 'high';
+    ec.translate(cx + OX, cy + OY);
+    ec.rotate(a);
+    ec.drawImage(CHAKRA_IMG[S.chakra], -R, -R, R*2, R*2);
+    ec.restore();
+  }
+
+  // North line
+  if(S.showNorthLine && S.center){
+    const a = (S.northDeg * Math.PI) / 180 - Math.PI/2;
+    ec.save();
+    ec.beginPath();
+    ec.moveTo(cx + OX, cy + OY);
+    ec.lineTo(cx + OX + Math.cos(a)*R*1.42, cy + OY + Math.sin(a)*R*1.42);
+    ec.strokeStyle = '#ff2020';
+    ec.lineWidth = Math.max(1.5, S.iw * 0.0015);
+    ec.lineCap = 'round';
+    ec.stroke();
+    ec.restore();
+  }
+
+  // Download at full resolution
+  const link = document.createElement('a');
+  link.download = 'vastu-chakra-map.png';
+  link.href = exp.toDataURL('image/png', 1.0);
+  link.click();
+}
 
 setState(1); setEM('move'); render();
 </script></body></html>
